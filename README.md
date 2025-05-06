@@ -1,3 +1,9 @@
+# Usage
+
+- **run** – builds and runs the app using files from the `data` directory  
+- **build** – formats the code, installs dependencies, and builds the project  
+- **test** – builds the project and runs the tests  
+
 # System prototype for biathlon competitions
 The prototype must be able to work with a configuration file and a set of external events of a certain format.
 Solution should contain golang (1.20 or newer) source file/files and unit tests (optional)
