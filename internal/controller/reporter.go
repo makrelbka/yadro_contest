@@ -65,10 +65,6 @@ func GenerateFinalReport(cfg config.Config, competitors map[string]*entity.Compe
 	var report []string
 	for _, c := range compList {
 		status := determineStatus(c)
-		if c.Status == entity.Finished {
-			status = formatDuration(calculateTotalTime(c))
-		}
-
 		lapsStr := formatLaps(c, cfg)
 		penaltyStr := formatPenalty(c, cfg)
 

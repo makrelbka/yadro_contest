@@ -5,6 +5,8 @@ import "time"
 const (
 	Registered = iota
 	Started
+	Firing
+	Penalty
 	Finished
 	Disqualified
 	CannotContinue

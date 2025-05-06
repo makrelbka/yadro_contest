@@ -15,8 +15,6 @@ func Run() error {
 		return fmt.Errorf("failed to load config: %w", err)
 	}
 
-	fmt.Println(cfg)
-
 	repo := inmemory.NewInMemoryRepository(cfg)
 
 	service := biathlon.NewCompetitorService(repo)

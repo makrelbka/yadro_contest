@@ -46,8 +46,8 @@ func (s *CompetitorService) StartCompetitor(c *entity.Competitor, actualTime tim
 }
 
 func (s *CompetitorService) EnterFiringRange(c *entity.Competitor, rangeID string) {
-	c.FiringRange = rangeID
-	c.Shots = 5
+	c.Status = entity.Firing
+	c.Shots += 5
 	s.repo.UpdateCompetitor(c)
 }
 
@@ -62,6 +62,7 @@ func (s *CompetitorService) LeaveFiringRange(c *entity.Competitor) {
 }
 
 func (s *CompetitorService) EnterPenaltyLaps(c *entity.Competitor, startTime time.Time) {
+	c.Status = entity.Penalty
 	c.PenaltyStart = startTime
 	s.repo.UpdateCompetitor(c)
 }
