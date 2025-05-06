@@ -1,8 +1,8 @@
 # Usage
 
-- **run** – builds and runs the app using files from the `data` directory  
-- **build** – formats the code, installs dependencies, and builds the project  
-- **test** – builds the project and runs the tests  
+- **make run** – builds and runs the app using files from the `data` directory  
+- **make build** – formats the code, installs dependencies, and builds the project  
+- **make test** – builds the project and runs the tests  
 
 # System prototype for biathlon competitions
 The prototype must be able to work with a configuration file and a set of external events of a certain format.
