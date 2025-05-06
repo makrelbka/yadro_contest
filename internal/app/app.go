@@ -5,7 +5,7 @@ import (
 
 	"yadro/config"
 	processing "yadro/internal/controller"
-	"yadro/internal/usecase/library"
+	"yadro/internal/usecase/biathlon"
 	"yadro/internal/usecase/repository"
 )
 
@@ -19,7 +19,7 @@ func Run() error {
 
 	repo := inmemory.NewInMemoryRepository(cfg)
 
-	service := library.NewCompetitorService(repo)
+	service := biathlon.NewCompetitorService(repo)
 
 	processor := processing.NewEventProcessor(service)
 

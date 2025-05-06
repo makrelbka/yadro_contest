@@ -1,10 +1,10 @@
-package library
+package biathlon
 
 import (
 	"fmt"
 	"time"
 	"yadro/internal/entity"
-	"yadro/internal/usecase/repository"
+	inmemory "yadro/internal/usecase/repository"
 )
 
 type CompetitorService struct {
@@ -20,7 +20,7 @@ func (s *CompetitorService) GetCompetitor(id string) (*entity.Competitor, bool) 
 }
 
 func (s *CompetitorService) RegisterCompetitor(c *entity.Competitor) {
-	c.Registered = true
+	c.Status = entity.Registered
 	s.repo.CreateCompetitor(c)
 }
 
@@ -32,13 +32,13 @@ func (s *CompetitorService) SetStartTime(c *entity.Competitor, t time.Time) {
 func (s *CompetitorService) StartCompetitor(c *entity.Competitor, actualTime time.Time) error {
 	c.StartActual = actualTime
 	if s.repo.Cfg.StartDelta == 0 {
-		c.Disqualified = true
+		c.Status = entity.Disqualified
 		return fmt.Errorf("invalid start delta for competitor(%s)", c.ID)
 	}
 	if c.StartActual.Sub(c.StartPlanned) > s.repo.Cfg.StartDelta {
-		c.Disqualified = true
+		c.Status = entity.Disqualified
 	} else {
-		c.Started = true
+		c.Status = entity.Started
 		c.LastLapStart = actualTime
 	}
 	s.repo.UpdateCompetitor(c)
@@ -75,13 +75,13 @@ func (s *CompetitorService) EndLap(c *entity.Competitor, lapEndTime time.Time) {
 	c.LapTimes = append(c.LapTimes, lapEndTime.Sub(c.LastLapStart))
 	c.LastLapStart = lapEndTime
 	if len(c.LapTimes) == s.repo.Cfg.Laps {
-		c.Finished = true
+		c.Status = entity.Finished
 	}
 	s.repo.UpdateCompetitor(c)
 }
 
 func (s *CompetitorService) MarkCannotContinue(c *entity.Competitor, reason string) {
-	c.CannotContinue = true
+	c.Status = entity.CannotContinue
 	c.Reason = reason
 	s.repo.UpdateCompetitor(c)
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"yadro/config"
 	"yadro/internal/controller"
-	"yadro/internal/usecase/library"
+	"yadro/internal/usecase/biathlon"
 	"yadro/internal/usecase/repository"
 )
 
@@ -48,7 +48,7 @@ func TestFullCycle_CompareLogsAndReport(t *testing.T) {
 	require.NoError(t, err, "failed to load config")
 
 	repo := inmemory.NewInMemoryRepository(cfg)
-	service := library.NewCompetitorService(repo)
+	service := biathlon.NewCompetitorService(repo)
 	processor := controller.NewEventProcessor(service)
 
 	var logs []string

@@ -65,7 +65,7 @@ func GenerateFinalReport(cfg config.Config, competitors map[string]*entity.Compe
 	var report []string
 	for _, c := range compList {
 		status := determineStatus(c)
-		if status == "Finished" {
+		if c.Status == entity.Finished {
 			status = formatDuration(calculateTotalTime(c))
 		}
 
@@ -78,27 +78,21 @@ func GenerateFinalReport(cfg config.Config, competitors map[string]*entity.Compe
 }
 
 func compareCompetitors(ci, cj *entity.Competitor) bool {
-	if ci.Disqualified != cj.Disqualified {
-		return !ci.Disqualified
-	}
-	if ci.CannotContinue != cj.CannotContinue {
-		return !ci.CannotContinue
-	}
-	if ci.Finished != cj.Finished {
-		return ci.Finished
+	if ci.Status != cj.Status {
+		return ci.Status < cj.Status
 	}
 	return calculateTotalTime(ci) < calculateTotalTime(cj)
 }
 
 func determineStatus(c *entity.Competitor) string {
-	if c.Disqualified {
+	switch c.Status {
+	case entity.Disqualified:
 		return "NotStarted"
-	}
-	if c.CannotContinue {
+	case entity.CannotContinue:
 		return "NotFinished"
-	}
-	if c.Finished {
+	case entity.Finished:
 		return "Finished"
+	default:
+		return "Running"
 	}
-	return "Running"
 }

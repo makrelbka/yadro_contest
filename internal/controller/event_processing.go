@@ -5,27 +5,27 @@ import (
 	"strings"
 	"time"
 	"yadro/internal/entity"
-	"yadro/internal/usecase/library"
+	"yadro/internal/usecase/biathlon"
 )
 
 const parseTimeConst = "15:04:05.000"
 
 type EventProcessor struct {
-	service *library.CompetitorService
+	service *biathlon.CompetitorService
 }
 
-func NewEventProcessor(service *library.CompetitorService) *EventProcessor {
+func NewEventProcessor(service *biathlon.CompetitorService) *EventProcessor {
 	return &EventProcessor{service: service}
 }
 
 func (p *EventProcessor) Process(e entity.Event, logs *[]string) {
 	c, exists := p.service.GetCompetitor(e.CompetitorID)
 	if !exists {
-		c = &entity.Competitor{ID: e.CompetitorID}
+		c = &entity.Competitor{ID: e.CompetitorID, Status: entity.Registered}
 		p.service.RegisterCompetitor(c)
 	}
 
-	if c.Disqualified || c.CannotContinue || (!c.Started && e.ID > 4) {
+	if c.Status == entity.Disqualified || c.Status == entity.CannotContinue || (c.Status == entity.Registered && e.ID > 4) {
 		return
 	}
 
