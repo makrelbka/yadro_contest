@@ -1,4 +1,5 @@
 build:
+	go fmt ./...
 	go mod tidy
 	go build -o generated/biathlon cmd/biathlon/main.go
 
